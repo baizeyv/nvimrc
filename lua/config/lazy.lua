@@ -1,3 +1,34 @@
+-- custom keybinds
+local key = {
+  home = { "H" },
+  install = { "T", "t" },
+  update = { "A", "a" },
+  sync = { "S" },
+  clean = { "X", "x" },
+  check = { "C", "c" },
+  log = { "L", "l" },
+  restore = { "R", "r" },
+  profile = { "P" },
+  debug = { "D" },
+  help = { "?" },
+  build = { "nil", "gb" },
+}
+
+local function load_lazy_keymap()
+  local command = require("lazy.view.config").commands
+  for key, value in pairs(key) do
+    for idx, k in ipairs(value) do
+      if idx == 1 and k ~= "nil" then
+        command[key].key = k
+      elseif idx == 2 then
+        command[key].key_plugin = k
+      end
+    end
+  end
+end
+
+---------------------------------------- Split Line ----------------------------------------
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -7,10 +38,12 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
+load_lazy_keymap()
+
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
-    { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+    { "baizeyv/LazyVim-Colemak", import = "lazyvim.plugins" },
     -- import any extras modules here
     -- { import = "lazyvim.plugins.extras.lang.typescript" },
     -- { import = "lazyvim.plugins.extras.lang.json" },
